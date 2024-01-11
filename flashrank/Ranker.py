@@ -36,7 +36,10 @@ class Ranker:
             
         model_file = model_file_map[model_name]
         
-        self.session = ort.InferenceSession(self.cache_dir / model_name / model_file)
+        self.session = ort.InferenceSession(
+            path_or_bytes=self.cache_dir / model_name / model_file,
+            providers=['CUDAExecutionProvider', 'CPUExecutionProvider'], 
+        )
         self.tokenizer = self._get_tokenizer()
 
     def _download_model_files(self, model_name):
